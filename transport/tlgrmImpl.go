@@ -1,41 +1,37 @@
 package transport
 
 import (
-	"bytes"
-	"encoding/json"
-	"io/ioutil"
-	"log"
-	"net/http"
-	"strconv"
+	tgbotapi "github.com/Syfaro/telegram-bot-api"
 )
 
-/* var botToken string = "5610958233:AAF7iMAJBZdrEJdJsQF9GJ_Oxcm7S_TiNio"
-var botApi string = "https://api.telegram.org/bot"
+func (wImpl *webImpl) StartBot() {
 
-type Update struct {
-	UpdateId int     `json:"update_id"`
-	Message  Message `json:"message"`
+	bot, err := tgbotapi.NewBotAPI(botToken) //(os.Getenv("TOKEN"))
+	if err != nil {
+		panic(err)
+	}
+
+	//Устанавливаем время обновления
+	u := tgbotapi.NewUpdate(0)
+	u.Timeout = 60
+
+	//Получаем обновления от бота
+	updates, err := bot.GetUpdatesChan(u)
+	if err != nil {
+		panic(err)
+	}
+
+	for update := range updates {
+		if update.Message == nil {
+			continue
+		}
+
+		bot.Send(wImpl.service.ProcessingResp(update))
+
+	}
 }
 
-type Message struct {
-	Chat Chat   `json:"chat"`
-	Text string `json:"text"`
-}
-
-type Chat struct {
-	ChatId int `json:"id"`
-}
-
-type RestResponse struct {
-	Result []Update `json:"result"`
-}
-
-type BotMessage struct {
-	ChatId int    `json:"chat_id"`
-	Text   string `json:"text"`
-} */
-
-func StartBot() {
+/* func StartBot1() {
 
 	botUrl := botApi + botToken
 	offset := 0
@@ -98,3 +94,4 @@ func respond(botUrl string, update Update) error {
 
 	return nil
 }
+*/
