@@ -1,7 +1,11 @@
 package transport
 
 const botToken string = "5610958233:AAF7iMAJBZdrEJdJsQF9GJ_Oxcm7S_TiNio"
-const botApi string = "https://api.telegram.org/bot"
+
+const GismeteoToken string = "56b30cb255.3443075"
+const GismeteoApi string = "https://api.gismeteo.net/v2/search/cities/?query=ставрополь"
+
+//const botApi string = "https://api.telegram.org/bot"
 
 /*
 type Update struct {

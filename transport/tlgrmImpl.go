@@ -1,6 +1,14 @@
 package transport
 
 import (
+	"bytes"
+	"context"
+	"encoding/json"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"strconv"
+
 	tgbotapi "github.com/Syfaro/telegram-bot-api"
 )
 
@@ -26,32 +34,29 @@ func (wImpl *webImpl) StartBot() {
 			continue
 		}
 
-		bot.Send(wImpl.service.ProcessingResp(update))
+		bot.Send(wImpl.service.ProcessingResp(context.Background(), update))
 
 	}
 }
 
-/* func StartBot1() {
+func (wImpl *webImpl) StartWindRequest() {
 
-	botUrl := botApi + botToken
+	GismeteoUrl := GismeteoApi + GismeteoToken
 	offset := 0
 
-	for {
-		updates, err := getUpdates(botUrl, offset)
+	updates, err := getUpdates(GismeteoUrl, offset)
+	if err != nil {
+		log.Println("getUpdates() -", err)
+	}
+	for _, update := range updates {
+		err := respond(GismeteoUrl, update)
 		if err != nil {
-			log.Println("getUpdates() -", err)
+			log.Println("respond() -", err)
 		}
-		for _, update := range updates {
-			err := respond(botUrl, update)
-			if err != nil {
-				log.Println("respond() -", err)
-			}
-			offset = update.UpdateId + 1
-
-		}
-		log.Println(updates)
+		offset = update.UpdateId + 1
 
 	}
+	log.Println(updates)
 
 }
 
@@ -94,4 +99,3 @@ func respond(botUrl string, update Update) error {
 
 	return nil
 }
-*/

@@ -29,23 +29,18 @@ services:
     environment:
       
       POSTGRES_DB: bot
-      POSTGRES_USER: user # The PostgreSQL user (useful to connect to the database)
-      POSTGRES_PASSWORD: user # The PostgreSQL password (useful to connect to the database)
+      POSTGRES_USER: user 
+      POSTGRES_PASSWORD: user 
       # POSTGRES_HOST: bot
-
-    #  - POSTGRES_HOST=postgres_bot
-    #  - POSTGRES_DB=tgbot
-    #  - POSTGRES_USER=root
-    #  - POSTGRES_PASSWORD=root
+   
     ports:
       - '5432:5432'
     volumes:
-        - ./db/postgres:/var/lib/postgresql
-      # - ./postgres-data:/var/lib/postgresql/data ./../
+        - ./postgres:/var/lib/postgresql
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
   

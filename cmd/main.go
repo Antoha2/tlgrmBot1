@@ -55,8 +55,7 @@ func initDb(cfg *config.Config) (*gorm.DB, error) {
 		cfg.DB.Dbname,
 		cfg.DB.Sslmode,
 	)
-	log.Println("!!!!!!!!!!!!!!!!!", connString)
-	// Prep config
+
 	connConfig, err := pgx.ParseConfig(connString)
 	if err != nil {
 		return nil, fmt.Errorf("1 failed to parse config: %v", err)
@@ -71,10 +70,13 @@ func initDb(cfg *config.Config) (*gorm.DB, error) {
 	gormDB, err := gorm.Open(postgres.New(postgres.Config{
 		Conn: dbx,
 	}), &gorm.Config{})
+	if err != nil {
+		return nil, fmt.Errorf("3 gorm.Open(): %v", err)
+	}
 
 	err = dbx.Ping()
 	if err != nil {
-		return nil, fmt.Errorf("3 error to ping connection pool: %v", err)
+		return nil, fmt.Errorf("4 error to ping connection pool: %v", err)
 	}
 	log.Printf("Подключение к базе данных на http://127.0.0.1:%d\n", cfg.DB.Port)
 	return gormDB, nil
