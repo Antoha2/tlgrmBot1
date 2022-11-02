@@ -17,13 +17,22 @@ func GetConfig() *Config {
 
 	return &Config{
 		DB: DBConfig{
-			User:     "todoadmin",
-			Password: "tododo",
+			Dbname:   "bot",
+			User:     "user",
+			Password: "user",
 			Host:     "postgres",
 			Port:     5432,
-			Dbname:   "tododb",
 			Sslmode:  "",
 		},
 	}
 
 }
+
+/* DB: DBConfig{
+	Dbname:   "root",
+	User:     "root",
+	Password: "root",
+	Host:     "postgres",
+	Port:     5432,
+	Sslmode:  "",
+}, */

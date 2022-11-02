@@ -1,0 +1,51 @@
+version: '3.2'
+services:
+
+  tlgrmBot1:
+    container_name: tlgrmBot1
+    image: golang:1.19
+  
+    depends_on:
+       - postgres
+   
+    environment:
+      ENVIRONMENT: development
+    volumes:
+      - ./:/app/
+    working_dir: /app
+    # expose:
+    #   - 8181
+    # ports:
+    #   - '8181:8181'
+    command: >
+     bash -c "go run  ./cmd/main.go"
+   
+
+
+  postgres:
+    container_name: postgres
+    image: postgres:13.6
+    restart: always
+    environment:
+      
+      POSTGRES_DB: bot
+      POSTGRES_USER: user # The PostgreSQL user (useful to connect to the database)
+      POSTGRES_PASSWORD: user # The PostgreSQL password (useful to connect to the database)
+      # POSTGRES_HOST: bot
+
+    #  - POSTGRES_HOST=postgres_bot
+    #  - POSTGRES_DB=tgbot
+    #  - POSTGRES_USER=root
+    #  - POSTGRES_PASSWORD=root
+    ports:
+      - '5432:5432'
+    volumes:
+        - ./db/postgres:/var/lib/postgresql
+      # - ./postgres-data:/var/lib/postgresql/data ./../
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  

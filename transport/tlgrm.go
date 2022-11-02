@@ -1,7 +1,7 @@
 package transport
 
-var botToken string = "5610958233:AAF7iMAJBZdrEJdJsQF9GJ_Oxcm7S_TiNio"
-var botApi string = "https://api.telegram.org/bot"
+const botToken string = "5610958233:AAF7iMAJBZdrEJdJsQF9GJ_Oxcm7S_TiNio"
+const botApi string = "https://api.telegram.org/bot"
 
 /*
 type Update struct {
