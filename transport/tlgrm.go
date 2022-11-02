@@ -8,7 +8,7 @@ const GismeteoApi string = "https://api.gismeteo.net/v2/search/cities/?query=—Å—
 //const botApi string = "https://api.telegram.org/bot"
 
 /*
-type Update struct {
+type Gismeteo struct {
 	UpdateId int     `json:"update_id"`
 	Message  Message `json:"message"`
 }
