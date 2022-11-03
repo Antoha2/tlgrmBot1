@@ -15,8 +15,8 @@ import (
 
 	"github.com/Antoha2/tlgrmBot1/config"
 	"github.com/Antoha2/tlgrmBot1/repository"
-	"github.com/Antoha2/tlgrmBot1/service"
 	trans "github.com/Antoha2/tlgrmBot1/transport"
+	"github.com/Antoha2/tlgrmBot1/windService/service"
 )
 
 func main() {

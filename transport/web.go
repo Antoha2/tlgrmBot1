@@ -1,7 +1,7 @@
 package transport
 
 import (
-	"github.com/Antoha2/tlgrmBot1/service"
+	"github.com/Antoha2/tlgrmBot1/windService/service"
 )
 
 type Transport interface {
