@@ -2,10 +2,6 @@ package transport
 
 import (
 	"context"
-	"encoding/json"
-	"io/ioutil"
-	"log"
-	"net/http"
 
 	tgbotapi "github.com/Syfaro/telegram-bot-api"
 )
@@ -31,86 +27,10 @@ func (wImpl *webImpl) StartBot() {
 		if update.Message == nil {
 			continue
 		}
-		wImpl.StartWindRequest()
-		bot.Send(wImpl.service.ProcessingResp(context.Background(), update))
 
+		msg := wImpl.windService.ProcessingResp(context.Background(), update)
+		bot.Send(msg)
 	}
-}
-
-func (wImpl *webImpl) StartWindRequest() {
-
-	//GismeteoUrl := GismeteoApi + GismeteoToken
-	offset := 0
-	YandexUrl := "https://api.weather.yandex.ru/v2/forecast?lat=45.043317&lon=41.969110"
-
-	err := getYandex(YandexUrl, offset)
-	if err != nil {
-		log.Println("getUpdates() -", err)
-	}
-	// for _, update := range updates {
-	// 	err := respond(GismeteoUrl, update)
-	// 	if err != nil {
-	// 		log.Println("respond() -", err)
-	// 	}
-	// 	offset = update.UpdateId + 1
-
-	// }
-	// log.Println(updates)
-
-}
-
-func getYandex(apiUrl string, offset int) error {
-
-	/* buf, err := json.Marshal(GismeteoToken)
-	if err != nil {
-		return err
-	} */
-
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", apiUrl, nil)
-	if err != nil {
-		log.Println("http.NewRequest() - ", err)
-		return err
-	}
-	req.Header.Set("X-Yandex-API-Key", YandexTocken)
-	log.Println("req - ", req)
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Println("client.Do() - ", err)
-		return err
-	}
-
-	//resp, err := http.Get(apiUrl)
-	/* buf, err := json.Marshal(GismeteoToken)
-	if err != nil {
-		return err
-	}
-	var w http.ResponseWriter */
-	//resp, err := http.Get(GismeteoApi)
-	//resp, err := http.Post(GismeteoApi, "application/json", bytes.NewBuffer(buf))
-	// if err != nil {
-	// 	log.Println("http.Get() - ", err)
-	// 	return err
-	// }
-	defer resp.Body.Close()
-
-	log.Println("resp - ", resp)
-	//resp.Header.Set()
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Println("ioutil.ReadAll() -", err)
-		return err
-	}
-
-	restResponse := new(Yandex)
-	err = json.Unmarshal(body, restResponse)
-	if err != nil {
-		log.Println("json.Unmarshal() -", err)
-		return err
-	}
-	log.Println(restResponse)
-	return nil
 }
 
 /*
@@ -119,7 +39,7 @@ func getGismeteo(apiUrl string, offset int) error {
 	buf, err := json.Marshal(GismeteoToken)
 	if err != nil {
 		return err
-	} 
+	}
 
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", GismeteoApi, nil)
@@ -140,7 +60,7 @@ func getGismeteo(apiUrl string, offset int) error {
 	if err != nil {
 		return err
 	}
-	var w http.ResponseWriter 
+	var w http.ResponseWriter
 	//resp, err := http.Get(GismeteoApi)
 	//resp, err := http.Post(GismeteoApi, "application/json", bytes.NewBuffer(buf))
 	// if err != nil {
@@ -165,7 +85,7 @@ func getGismeteo(apiUrl string, offset int) error {
 		log.Println("json.Unmarshal() -", err)
 		return err
 	}
-	log.Println(restResponse) 
+	log.Println(restResponse)
 	return nil
 }
 
@@ -185,3 +105,4 @@ func getGismeteo(apiUrl string, offset int) error {
 
 // 	return nil
 // }
+*/

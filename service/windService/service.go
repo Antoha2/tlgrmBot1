@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 
+	"github.com/Antoha2/tlgrmBot1/internal/meteo"
 	repository "github.com/Antoha2/tlgrmBot1/repository"
 	tgbotapi "github.com/Syfaro/telegram-bot-api"
 )
@@ -12,12 +13,18 @@ type Service interface {
 }
 
 type serviceImpl struct {
-	repository repository.Repository
+	rep repository.Repository
+	ya  meteo.GetWinder
+	gis meteo.GetWinder
+	//clientWeather meteo.GetWinder
 }
 
-func NewService(rep repository.Repository) *serviceImpl {
+func NewService(rep repository.Repository, yandex meteo.GetWinder, gismeteo meteo.GetWinder) *serviceImpl {
 	return &serviceImpl{
-		repository: rep,
+		rep: rep,
+		ya:  yandex,
+		gis: gismeteo,
+		//clientWeather: meteo,
 	}
 }
 
