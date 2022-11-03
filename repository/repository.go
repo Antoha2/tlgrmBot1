@@ -27,9 +27,3 @@ type RepositoryMessage struct {
 type chat struct {
 	ChatId int64 `json:"chat_id"`
 }
-
-/* func NewDB(dbx *gorm.DB) *repositoryImplDB {
-	return &repositoryImplDB{
-		rep: dbx,
-	}
-} */

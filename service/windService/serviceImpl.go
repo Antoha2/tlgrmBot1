@@ -13,6 +13,7 @@ func (sImpl *serviceImpl) ProcessingResp(ctx context.Context, tgMessage tgbotapi
 
 	//sImpl.StartWindRequest()
 	//sImpl.clientWeather.GetWind()
+
 	yaData, err := sImpl.ya.GetWind(yandex.YandexUrl, yandex.YandexKey, yandex.YandexTocken)
 	if err != nil {
 		log.Println(err)
@@ -30,33 +31,27 @@ func (sImpl *serviceImpl) ProcessingResp(ctx context.Context, tgMessage tgbotapi
 		log.Println(err)
 	}
 
-	//contact := update.Message.Contact.UserID
-	//log.Println(sm)
-	//log.Printf("[%s] %d %s \n", UserName, ChatID, Text)
-	//reply := sm.Text
-	// msg := tgbotapi.NewMessage(repMessage.Chat.ChatId, repMessage.Text)
-
 	msg := tgbotapi.NewMessage(repMessage.Chat.ChatId, yaData)
 	return msg
 }
 
-func (sImpl *serviceImpl) StartWindRequest() {
+// func (sImpl *serviceImpl) StartWindRequest() {
 
-	//sImpl.clientWeather.GetWind()
+// 	sImpl.clientWeather.GetWind()
 
-	//sImpl.repository.AddMessage()
-	//err :=  sImpl.clientWeather   //getYandex(YandexUrl, offset)
-	// if err != nil {
-	// log.Println("getUpdates() -", err)
-	// }
-	// for _, update := range updates {
-	// 	err := respond(GismeteoUrl, update)
-	// 	if err != nil {
-	// 		log.Println("respond() -", err)
-	// 	}
-	// 	offset = update.UpdateId + 1
+// 	sImpl.repository.AddMessage()
+// 	err :=  sImpl.clientWeather   //getYandex(YandexUrl, offset)
+// 	if err != nil {
+// 	log.Println("getUpdates() -", err)
+// 	}
+// 	for _, update := range updates {
+// 		err := respond(GismeteoUrl, update)
+// 		if err != nil {
+// 			log.Println("respond() -", err)
+// 		}
+// 		offset = update.UpdateId + 1
 
-	// }
-	// log.Println(updates)
+// 	}
+// 	log.Println(updates)
 
-}
+// }

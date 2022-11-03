@@ -17,7 +17,7 @@ func (s *yandexImpl) GetWind(apiUrl, apiKey, apiTocken string) (string, error) {
 		return "", err
 	}
 	req.Header.Set(apiKey, apiTocken)
-	log.Println("req - ", req)
+	// log.Println("req - ", req)
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Println("client.Do() - ", err)
@@ -26,7 +26,7 @@ func (s *yandexImpl) GetWind(apiUrl, apiKey, apiTocken string) (string, error) {
 
 	defer resp.Body.Close()
 
-	log.Println("resp - ", resp)
+	// log.Println("resp - ", resp)
 	//resp.Header.Set()
 
 	body, err := ioutil.ReadAll(resp.Body)
@@ -35,15 +35,38 @@ func (s *yandexImpl) GetWind(apiUrl, apiKey, apiTocken string) (string, error) {
 		return "", err
 	}
 
-	restResponse := new(Yandex)
-	err = json.Unmarshal(body, restResponse)
+	r := new(Yandex)
+	err = json.Unmarshal(body, r)
 	if err != nil {
 		log.Println("json.Unmarshal() -", err)
 		return "", err
 	}
 
-	log.Println(restResponse)
-	msg := fmt.Sprintf("%v %v", restResponse.Geo_object.Locality.Name, restResponse.Geo_object.Locality.Name)
+	var wind_dir string
+	switch r.Fact.Wind_dir {
+	case "nw":
+		wind_dir = "северо-западное"
+	case "n":
+		wind_dir = "северное"
+	case "ne":
+		wind_dir = "северо-восточное"
+	case "e":
+		wind_dir = "восточное"
+	case "se":
+		wind_dir = "юго-восточное"
+	case "s":
+		wind_dir = "южное"
+	case "sw":
+		wind_dir = "юго-западное"
+	case "w":
+		wind_dir = "западное"
+	case "c":
+		wind_dir = "штиль"
+
+	}
+
+	msg := fmt.Sprintf("Яндекс \n %s %s \n Скорость ветра (в м/с) - %.1f\n Скорость порывов ветра (в м/с) - %.1f\n Направление ветра - %s",
+		r.Geo_object.Locality.Name, r.Geo_object.Province.Name, r.Fact.Wind_speed, r.Fact.Wind_gust, wind_dir)
 	return msg, nil
 
 }
