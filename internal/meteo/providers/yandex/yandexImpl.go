@@ -28,9 +28,6 @@ func (s *yandexImpl) GetWind(request *meteo.Querry) (string, error) {
 	}
 	defer resp.Body.Close()
 
-	// log.Println("resp - ", resp)
-	//resp.Header.Set()
-
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Println("ioutil.ReadAll() -", err)

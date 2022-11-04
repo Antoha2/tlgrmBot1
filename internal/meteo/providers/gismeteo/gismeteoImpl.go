@@ -5,17 +5,20 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/Antoha2/tlgrmBot1/config"
+	"github.com/Antoha2/tlgrmBot1/internal/meteo"
 )
 
-func (s *gismeteoImpl) GetWind(apiUrl, apiKey, apiTocken string) (string, error) {
+func (s *gismeteoImpl) GetWind(request *meteo.Querry) (string, error) {
 
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", apiUrl, nil)
+	req, err := http.NewRequest("GET", config.GismeteoUrl, nil)
 	if err != nil {
 		log.Println("http.NewRequest() - ", err)
 		return "", err
 	}
-	req.Header.Set(apiKey, apiTocken)
+	req.Header.Set("apiKey", config.GismeteoToken) //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! apiKey
 	log.Println("req - ", req)
 	resp, err := client.Do(req)
 	if err != nil {

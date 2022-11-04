@@ -11,10 +11,8 @@ import (
 
 func (s *geokoderImpl) GetCoordinates(location string) (*Coordinates, error) {
 
-	locationBody := fmt.Sprintf(`{"query":"%s"}`, location) //     `"query/": /"locationBody"`
-	//postBody, _ := json.Marshal(`"query/": /"locationBody"`)
-	// postBody, _ := json.Marshal(map[string]string{"query": locationBody})
-	responseBody := bytes.NewBuffer([]byte(locationBody)) //(postBody)
+	locationBody := fmt.Sprintf(`{"query":"%s"}`, location)
+	responseBody := bytes.NewBuffer([]byte(locationBody))
 	req, err := http.NewRequest("POST", GeokoderUrl, responseBody)
 	if err != nil {
 		log.Println("http.NewRequest() - ", err)
