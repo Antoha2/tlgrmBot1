@@ -14,6 +14,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/Antoha2/tlgrmBot1/config"
+	"github.com/Antoha2/tlgrmBot1/internal/geokoder"
 	"github.com/Antoha2/tlgrmBot1/internal/meteo/providers/gismeteo"
 	"github.com/Antoha2/tlgrmBot1/internal/meteo/providers/yandex"
 	repository "github.com/Antoha2/tlgrmBot1/repository"
@@ -36,9 +37,12 @@ func Run() {
 	}
 
 	TgBotRepository := repository.NewRepository(gormDB)
+
+	TgBotGeokoder := geokoder.NewGeokoder()
 	TgBotMeteoYandex := yandex.NewYandex()
+
 	TgBotMeteoGismeteo := gismeteo.NewGismeteo()
-	TgBotService := service.NewService(TgBotRepository, TgBotMeteoYandex, TgBotMeteoGismeteo)
+	TgBotService := service.NewService(TgBotRepository, TgBotMeteoYandex, TgBotMeteoGismeteo, TgBotGeokoder)
 	TgBotTransport := trans.NewWeb(TgBotService)
 
 	TgBotTransport.StartBot()

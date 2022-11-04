@@ -1,17 +1,23 @@
 package yandex
 
-import "github.com/Antoha2/tlgrmBot1/internal/meteo"
+import (
+	//"github.com/Antoha2/tlgrmBot1/internal/geokoder"
+	"github.com/Antoha2/tlgrmBot1/internal/meteo"
+)
 
-const YandexTocken string = "25b77834-9b16-43b1-8b8e-28c2742f4819"
-const YandexUrl string = "https://api.weather.yandex.ru/v2/forecast?lat=45.043317&lon=41.969110"
-const YandexKey string = "X-Yandex-API-Key"
+
+
+var YandexCoordinates string
 
 type yandexImpl struct {
 	meteo.GetWinder
+	//	geokoder.GeokoderIn
 }
 
 func NewYandex() *yandexImpl {
-	return &yandexImpl{}
+	return &yandexImpl{
+		//geokoder: gk,
+	}
 }
 
 type Yandex struct {

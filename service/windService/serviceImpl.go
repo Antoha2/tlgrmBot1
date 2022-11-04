@@ -4,17 +4,26 @@ import (
 	"context"
 	"log"
 
-	"github.com/Antoha2/tlgrmBot1/internal/meteo/providers/yandex"
+	"github.com/Antoha2/tlgrmBot1/internal/meteo"
 	repository "github.com/Antoha2/tlgrmBot1/repository"
 	tgbotapi "github.com/Syfaro/telegram-bot-api"
 )
 
-func (sImpl *serviceImpl) ProcessingResp(ctx context.Context, tgMessage tgbotapi.Update) tgbotapi.MessageConfig {
+func (s *service) ProcessingResp(ctx context.Context, tgMessage tgbotapi.Update) tgbotapi.MessageConfig {
 
-	//sImpl.StartWindRequest()
-	//sImpl.clientWeather.GetWind()
+	coordinates, err := s.gk.GetCoordinates(tgMessage.Message.Text)
+	if err != nil {
+		log.Println("GetCoordinates() - ", err)
+	}
 
-	yaData, err := sImpl.ya.GetWind(yandex.YandexUrl, yandex.YandexKey, yandex.YandexTocken)
+	req := &meteo.Querry{
+		Lat: coordinates.Lat,
+		Lon: coordinates.Lon,
+	}
+
+	log.Println("!!!!!!!!!!!!! - ", coordinates)
+
+	yaData, err := s.ya.GetWind(req)
 	if err != nil {
 		log.Println(err)
 	}
@@ -26,7 +35,7 @@ func (sImpl *serviceImpl) ProcessingResp(ctx context.Context, tgMessage tgbotapi
 	repMessage.Text = tgMessage.Message.Text
 	repMessage.Chat.ChatId = tgMessage.Message.Chat.ID
 
-	err = sImpl.rep.AddMessage(repMessage)
+	err = s.rep.AddMessage(repMessage)
 	if err != nil {
 		log.Println(err)
 	}

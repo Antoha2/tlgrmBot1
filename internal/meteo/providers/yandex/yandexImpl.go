@@ -6,24 +6,26 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/Antoha2/tlgrmBot1/config"
+	"github.com/Antoha2/tlgrmBot1/internal/meteo"
 )
 
-func (s *yandexImpl) GetWind(apiUrl, apiKey, apiTocken string) (string, error) {
+func (s *yandexImpl) GetWind(request *meteo.Querry) (string, error) {
 
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", apiUrl, nil)
+	//log.Println(geokoder.Coordinates)
+	req, err := http.NewRequest("GET", config.YandexUrl, nil)
 	if err != nil {
 		log.Println("http.NewRequest() - ", err)
 		return "", err
 	}
-	req.Header.Set(apiKey, apiTocken)
-	// log.Println("req - ", req)
+	req.Header.Set(config.YandexKey, config.YandexTocken)
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Println("client.Do() - ", err)
 		return "", err
 	}
-
 	defer resp.Body.Close()
 
 	// log.Println("resp - ", resp)

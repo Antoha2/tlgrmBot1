@@ -1,5 +1,11 @@
 package meteo
 
 type GetWinder interface {
-	GetWind(apiUrl, apiKey, apiTocken string) (string, error)
+	GetWind(request *Querry) (string, error)
+}
+
+type Querry struct {
+	Lat      string
+	Lon      string
+	CityName string
 }
