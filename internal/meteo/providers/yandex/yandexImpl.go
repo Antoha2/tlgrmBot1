@@ -13,9 +13,11 @@ import (
 
 func (s *yandexImpl) GetWind(request *meteo.Querry) (string, error) {
 
+	coordStr := fmt.Sprintf("?lat=%s&lon=%s", request.Lat, request.Lon)
+
 	client := &http.Client{}
 	//log.Println(geokoder.Coordinates)
-	req, err := http.NewRequest("GET", config.YandexUrl, nil)
+	req, err := http.NewRequest("GET", config.YandexUrl+coordStr, nil)
 	if err != nil {
 		log.Println("http.NewRequest() - ", err)
 		return "", err

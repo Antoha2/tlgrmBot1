@@ -3,12 +3,13 @@ package transport
 import (
 	"context"
 
+	"github.com/Antoha2/tlgrmBot1/config"
 	tgbotapi "github.com/Syfaro/telegram-bot-api"
 )
 
 func (wImpl *webImpl) StartBot() {
 
-	bot, err := tgbotapi.NewBotAPI(botToken) //(os.Getenv("TOKEN"))
+	bot, err := tgbotapi.NewBotAPI(config.BotToken) //(os.Getenv("TOKEN"))
 	if err != nil {
 		panic(err)
 	}

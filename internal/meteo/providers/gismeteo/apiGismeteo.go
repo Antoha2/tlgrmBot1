@@ -2,8 +2,7 @@ package gismeteo
 
 import "github.com/Antoha2/tlgrmBot1/internal/meteo"
 
-const GismeteoToken string = "56b30cb255.3443075"
-const GismeteoApi string = "https://api.gismeteo.net/v2/search/cities/?query=москв"
+
 
 type gismeteoImpl struct {
 	meteo.GetWinder

@@ -40,8 +40,8 @@ func Run() {
 
 	TgBotGeokoder := geokoder.NewGeokoder()
 	TgBotMeteoYandex := yandex.NewYandex()
-
 	TgBotMeteoGismeteo := gismeteo.NewGismeteo()
+
 	TgBotService := service.NewService(TgBotRepository, TgBotMeteoYandex, TgBotMeteoGismeteo, TgBotGeokoder)
 	TgBotTransport := trans.NewWeb(TgBotService)
 

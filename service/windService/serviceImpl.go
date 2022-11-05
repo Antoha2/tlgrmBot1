@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"log"
+	"regexp"
 
 	"github.com/Antoha2/tlgrmBot1/internal/meteo"
 	repository "github.com/Antoha2/tlgrmBot1/repository"
@@ -11,21 +12,31 @@ import (
 
 func (s *service) ProcessingResp(ctx context.Context, tgMessage tgbotapi.Update) tgbotapi.MessageConfig {
 
-	coordinates, err := s.gk.GetCoordinates(tgMessage.Message.Text)
-	if err != nil {
-		log.Println("GetCoordinates() - ", err)
-	}
+	var yaData string
 
-	req := &meteo.Querry{
-		Lat: coordinates.Lat,
-		Lon: coordinates.Lon,
-	}
+	testOk := checkMsgText(tgMessage.Message.Text)
+	log.Println("!!!!!!!!!!!!!!!! test - ", testOk)
 
-	log.Println("!!!!!!!!!!!!! - ", coordinates)
+	if testOk {
+		coordinates, err := s.gk.GetCoordinates(tgMessage.Message.Text)
+		if err != nil {
+			log.Println("GetCoordinates() - ", err)
+		}
 
-	yaData, err := s.ya.GetWind(req)
-	if err != nil {
-		log.Println(err)
+		reqCoord := &meteo.Querry{
+			Lat:      coordinates.Lat,
+			Lon:      coordinates.Lon,
+			CityName: coordinates.CityName,
+		}
+
+		log.Println("!!!!!!!!!!!!! - ", reqCoord)
+
+		yaData, err = s.ya.GetWind(reqCoord)
+		if err != nil {
+			log.Println(err)
+		}
+	} else {
+		yaData = "некорректный ввод"
 	}
 
 	repMessage := new(repository.RepositoryMessage)
@@ -35,13 +46,19 @@ func (s *service) ProcessingResp(ctx context.Context, tgMessage tgbotapi.Update)
 	repMessage.Text = tgMessage.Message.Text
 	repMessage.Chat.ChatId = tgMessage.Message.Chat.ID
 
-	err = s.rep.AddMessage(repMessage)
+	err := s.rep.AddMessage(repMessage)
 	if err != nil {
 		log.Println(err)
 	}
 
 	msg := tgbotapi.NewMessage(repMessage.Chat.ChatId, yaData)
 	return msg
+}
+
+func checkMsgText(msg string) bool {
+	//m, _ := regexp.MatchString("^[a-zA-Z]", msg)
+	m, _ := regexp.MatchString("^[а-яA-Я]", msg)
+	return m
 }
 
 // func (sImpl *serviceImpl) StartWindRequest() {

@@ -41,13 +41,20 @@ func (s *geokoderImpl) GetCoordinates(location string) (*Coordinates, error) {
 		return nil, err
 	}
 
-	for i, xd := range r.Geokoder {
-		log.Println(i, xd)
-	}
+	// for i, xd := range r.Geokoder {
+	// 	log.Println(i, xd)
+	// }
 
 	coordinates := new(Coordinates)
-	coordinates.Lat = r.Geokoder[0].Data.Geo_lat
-	coordinates.Lon = r.Geokoder[0].Data.Geo_lon
+	if coordinates.Lat != "" || coordinates.Lon != "" {
+		coordinates.Lat = r.Geokoder[0].Data.Geo_lat
+		coordinates.Lon = r.Geokoder[0].Data.Geo_lon
+		coordinates.CityName = r.Geokoder[0].Unrestricted_value
+	} else {
+		coordinates.Lat = r.Geokoder[1].Data.Geo_lat
+		coordinates.Lon = r.Geokoder[1].Data.Geo_lon
+		coordinates.CityName = r.Geokoder[1].Unrestricted_value
+	}
 
 	return coordinates, nil
 }
