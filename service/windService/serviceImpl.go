@@ -13,33 +13,34 @@ import (
 func (s *service) ProcessingResp(ctx context.Context, tgMessage tgbotapi.Update) tgbotapi.MessageConfig {
 
 	var yaData string
+	repMessage := new(repository.RepositoryMessage)
 
 	testOk := checkMsgText(tgMessage.Message.Text)
-	log.Println("!!!!!!!!!!!!!!!! test - ", testOk)
+	// log.Println("!!!!!!!!!!!!!!!! test - ", testOk)
 
 	if testOk {
 		coordinates, err := s.gk.GetCoordinates(tgMessage.Message.Text)
 		if err != nil {
 			log.Println("GetCoordinates() - ", err)
-		}
+			yaData = "не найдено"
+		} else {
 
-		reqCoord := &meteo.Querry{
-			Lat:      coordinates.Lat,
-			Lon:      coordinates.Lon,
-			CityName: coordinates.CityName,
-		}
+			reqCoord := &meteo.Querry{
+				Lat:      coordinates.Lat,
+				Lon:      coordinates.Lon,
+				CityName: coordinates.CityName,
+			}
 
-		log.Println("!!!!!!!!!!!!! - ", reqCoord)
+			//log.Println("!!!!!!!!!!!!! - ", reqCoord)
 
-		yaData, err = s.ya.GetWind(reqCoord)
-		if err != nil {
-			log.Println(err)
+			yaData, err = s.ya.GetWind(reqCoord)
+			if err != nil {
+				log.Println("GetWinder() - ", err)
+			}
 		}
 	} else {
 		yaData = "некорректный ввод"
 	}
-
-	repMessage := new(repository.RepositoryMessage)
 
 	//Chat := update.Message.Chat.ID
 	repMessage.UserName = tgMessage.Message.From.UserName

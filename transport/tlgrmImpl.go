@@ -2,6 +2,7 @@ package transport
 
 import (
 	"context"
+	"log"
 
 	"github.com/Antoha2/tlgrmBot1/config"
 	tgbotapi "github.com/Syfaro/telegram-bot-api"
@@ -9,8 +10,9 @@ import (
 
 func (wImpl *webImpl) StartBot() {
 
-	bot, err := tgbotapi.NewBotAPI(config.BotToken) //(os.Getenv("TOKEN"))
+	bot, err := tgbotapi.NewBotAPI(config.BotToken)
 	if err != nil {
+		log.Println("NewBotAPI() - ", err)
 		panic(err)
 	}
 
@@ -21,6 +23,7 @@ func (wImpl *webImpl) StartBot() {
 	//Получаем обновления от бота
 	updates, err := bot.GetUpdatesChan(u)
 	if err != nil {
+		log.Println("GetUpdatesChan() - ", err)
 		panic(err)
 	}
 

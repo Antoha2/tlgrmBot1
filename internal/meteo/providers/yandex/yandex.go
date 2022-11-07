@@ -5,8 +5,6 @@ import (
 	"github.com/Antoha2/tlgrmBot1/internal/meteo"
 )
 
-
-
 var YandexCoordinates string
 
 type yandexImpl struct {

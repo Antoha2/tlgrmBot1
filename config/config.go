@@ -1,10 +1,13 @@
 package config
 
-const BotToken string = "5610958233:AAF7iMAJBZdrEJdJsQF9GJ_Oxcm7S_TiNio"
+import "os"
 
-const YandexTocken string = "25b77834-9b16-43b1-8b8e-28c2742f4819"
-const YandexUrl string = "https://api.weather.yandex.ru/v2/forecast" //?lat=45.043317&lon=41.969110"
-const YandexKey string = "X-Yandex-API-Key"
+var (
+	BotToken     = os.Getenv("BOT_TOCKEN")
+	YandexTocken = os.Getenv("YANDEX_TOCKEN")
+	YandexUrl    = os.Getenv("YANDEX_URL")
+	YandexKey    = os.Getenv("YANDEX_KEY")
+)
 
 const GismeteoToken string = "56b30cb255.3443075"
 const GismeteoUrl string = "https://api.gismeteo.net/v2/search/cities/?query=москв"

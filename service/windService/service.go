@@ -28,13 +28,3 @@ func NewService(rep repository.Repository, yandex meteo.GetWinder, gismeteo mete
 		gk:  geokoder,
 	}
 }
-
-type ServiceMessage struct {
-	UserName string `json:"user_name"`
-	Chat     chat   `json:"chat"`
-	Text     string `json:"text"`
-}
-
-type chat struct {
-	ChatId int64 `json:"id"`
-}

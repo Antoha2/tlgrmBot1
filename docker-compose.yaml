@@ -4,19 +4,20 @@ services:
   tlgrmBot1:
     container_name: tlgrmBot1
     image: golang:1.19
-  
+      
     depends_on:
        - postgres
    
     environment:
-      ENVIRONMENT: development
+      BOT_TOCKEN: 5610958233:AAF7iMAJBZdrEJdJsQF9GJ_Oxcm7S_TiNio
+      YANDEX_TOCKEN: 25b77834-9b16-43b1-8b8e-28c2742f4819
+      YANDEX_URL: https://api.weather.yandex.ru/v2/forecast
+      YANDEX_KEY: X-Yandex-API-Key
+      
     volumes:
       - ./:/app/
     working_dir: /app
-    # expose:
-    #   - 8181
-    # ports:
-    #   - '8181:8181'
+
     command: >
      bash -c "go run  ./cmd/main.go"
    
@@ -44,3 +45,21 @@ services:
   #   ports:
   #     - 8080:8080
   
+  # tlgrmBot1:
+  #   container_name: tlgrmBot1
+  #   image: golang:1.19
+  
+  #   depends_on:
+  #      - postgres
+   
+  #   environment:
+  #     ENVIRONMENT: development
+  #   volumes:
+  #     - ./:/app/
+  #   working_dir: /app
+  #   # expose:
+  #   #   - 8181
+  #   # ports:
+  #   #   - '8181:8181'
+  #   command: >
+  #    bash -c "go run  ./cmd/main.go"

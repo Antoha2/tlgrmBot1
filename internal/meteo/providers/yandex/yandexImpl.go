@@ -16,7 +16,6 @@ func (s *yandexImpl) GetWind(request *meteo.Querry) (string, error) {
 	coordStr := fmt.Sprintf("?lat=%s&lon=%s", request.Lat, request.Lon)
 
 	client := &http.Client{}
-	//log.Println(geokoder.Coordinates)
 	req, err := http.NewRequest("GET", config.YandexUrl+coordStr, nil)
 	if err != nil {
 		log.Println("http.NewRequest() - ", err)
@@ -66,8 +65,10 @@ func (s *yandexImpl) GetWind(request *meteo.Querry) (string, error) {
 
 	}
 
+	// msg := fmt.Sprintf("Яндекс \n %s %s \n Скорость ветра (в м/с) - %.1f\n Скорость порывов ветра (в м/с) - %.1f\n Направление ветра - %s",
+	// r.Geo_object.Locality.Name, r.Geo_object.Province.Name, r.Fact.Wind_speed, r.Fact.Wind_gust, wind_dir)
 	msg := fmt.Sprintf("Яндекс \n %s %s \n Скорость ветра (в м/с) - %.1f\n Скорость порывов ветра (в м/с) - %.1f\n Направление ветра - %s",
-		r.Geo_object.Locality.Name, r.Geo_object.Province.Name, r.Fact.Wind_speed, r.Fact.Wind_gust, wind_dir)
+		request.CityName, r.Geo_object.Province.Name, r.Fact.Wind_speed, r.Fact.Wind_gust, wind_dir)
 	return msg, nil
 
 }

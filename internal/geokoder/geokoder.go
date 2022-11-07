@@ -27,7 +27,7 @@ type Suggestions struct {
 }
 
 type Geokoder struct {
-	Value              string `json:"value"`
+	//Value              string `json:"value"`
 	Unrestricted_value string `json:"unrestricted_value"`
 	Data               Data   `json:"data"`
 }
