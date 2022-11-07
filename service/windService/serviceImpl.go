@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"regexp"
 
@@ -16,7 +17,6 @@ func (s *service) ProcessingResp(ctx context.Context, tgMessage tgbotapi.Update)
 	repMessage := new(repository.RepositoryMessage)
 
 	testOk := checkMsgText(tgMessage.Message.Text)
-	// log.Println("!!!!!!!!!!!!!!!! test - ", testOk)
 
 	if testOk {
 		coordinates, err := s.gk.GetCoordinates(tgMessage.Message.Text)
@@ -31,8 +31,6 @@ func (s *service) ProcessingResp(ctx context.Context, tgMessage tgbotapi.Update)
 				CityName: coordinates.CityName,
 			}
 
-			//log.Println("!!!!!!!!!!!!! - ", reqCoord)
-
 			yaData, err = s.ya.GetWind(reqCoord)
 			if err != nil {
 				log.Println("GetWinder() - ", err)
@@ -41,18 +39,39 @@ func (s *service) ProcessingResp(ctx context.Context, tgMessage tgbotapi.Update)
 	} else {
 		yaData = "некорректный ввод"
 	}
-
+	msg := tgbotapi.NewMessage(tgMessage.Message.Chat.ID, yaData)
 	//Chat := update.Message.Chat.ID
+
 	repMessage.UserName = tgMessage.Message.From.UserName
 	repMessage.Text = tgMessage.Message.Text
 	repMessage.Chat.ChatId = tgMessage.Message.Chat.ID
+	repMessage.Response = msg.Text
 
 	err := s.rep.AddMessage(repMessage)
 	if err != nil {
 		log.Println(err)
 	}
+	//msg := tgbotapi.NewMessage(repMessage.Chat.ChatId, yaData)
+	return msg
+}
 
-	msg := tgbotapi.NewMessage(repMessage.Chat.ChatId, yaData)
+func (s *service) RepeatRequest(ctx context.Context, tgMessage tgbotapi.Update) tgbotapi.MessageConfig {
+
+	//var msg tgbotapi.Update
+
+	repMessage, err := s.rep.RepeatMessage(tgMessage.Message.Chat.ID)
+	if err != nil {
+		log.Println(err)
+		//return nil
+	}
+
+	text := fmt.Sprintf("запрос: %s \n ответ: %s", repMessage.Text, repMessage.Response)
+	msg := tgbotapi.NewMessage(tgMessage.Message.Chat.ID, text)
+
+	// msg.Message.From.UserName = repMessage.UserName
+	// msg.Message.Text = fmt.Sprintf("запрос: %s \n ответ: %s", repMessage.Text, repMessage.Response)
+	// msg.Message.Chat.ID = repMessage.Chat.ChatId
+
 	return msg
 }
 

@@ -3,6 +3,7 @@ package transport
 import (
 	"context"
 	"log"
+	"reflect"
 
 	"github.com/Antoha2/tlgrmBot1/config"
 	tgbotapi "github.com/Syfaro/telegram-bot-api"
@@ -27,12 +28,38 @@ func (wImpl *webImpl) StartBot() {
 		panic(err)
 	}
 
+	var msg tgbotapi.MessageConfig
+
 	for update := range updates {
 		if update.Message == nil {
 			continue
 		}
+		if reflect.TypeOf(update.Message.Text).Kind() == reflect.String && update.Message.Text != "" {
+			switch update.Message.Text {
 
-		msg := wImpl.windService.ProcessingResp(context.Background(), update)
-		bot.Send(msg)
+			case "/stavropol":
+				update.Message.Text = "ставрополь"
+				msg = wImpl.windService.ProcessingResp(context.Background(), update)
+				bot.Send(msg)
+			case "/moskow":
+				update.Message.Text = "москва"
+				msg = wImpl.windService.ProcessingResp(context.Background(), update)
+				bot.Send(msg)
+			case "/saint_petersburg":
+				update.Message.Text = "санкт-петербург"
+				msg = wImpl.windService.ProcessingResp(context.Background(), update)
+				bot.Send(msg)
+			case "/alma_ata":
+				update.Message.Text = "алма-ата"
+				msg = wImpl.windService.ProcessingResp(context.Background(), update)
+				bot.Send(msg)
+			case "/repeat_last_request":
+				msg = wImpl.windService.RepeatRequest(context.Background(), update)
+				bot.Send(msg)
+			default:
+				msg = wImpl.windService.ProcessingResp(context.Background(), update)
+				bot.Send(msg)
+			}
+		}
 	}
 }

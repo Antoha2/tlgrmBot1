@@ -11,6 +11,7 @@ import (
 
 type Service interface {
 	ProcessingResp(ctx context.Context, update tgbotapi.Update) tgbotapi.MessageConfig
+	RepeatRequest(ctx context.Context, update tgbotapi.Update) tgbotapi.MessageConfig //tgbotapi.Update
 }
 
 type service struct {

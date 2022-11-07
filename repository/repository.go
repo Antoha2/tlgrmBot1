@@ -4,6 +4,7 @@ import "gorm.io/gorm"
 
 type Repository interface {
 	AddMessage(*RepositoryMessage) error
+	RepeatMessage(ChatId int64) (*RepositoryMessage, error)
 }
 
 type repositoryImplDB struct {
@@ -22,6 +23,7 @@ type RepositoryMessage struct {
 	UserName  string `json:"user_name"`
 	Chat      chat   `json:"chat"`
 	Text      string `json:"text"`
+	Response  string `json:"response"`
 }
 
 type chat struct {

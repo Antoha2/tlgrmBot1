@@ -67,6 +67,7 @@ func (s *yandexImpl) GetWind(request *meteo.Querry) (string, error) {
 
 	// msg := fmt.Sprintf("Яндекс \n %s %s \n Скорость ветра (в м/с) - %.1f\n Скорость порывов ветра (в м/с) - %.1f\n Направление ветра - %s",
 	// r.Geo_object.Locality.Name, r.Geo_object.Province.Name, r.Fact.Wind_speed, r.Fact.Wind_gust, wind_dir)
+
 	msg := fmt.Sprintf("Яндекс \n %s %s \n Скорость ветра (в м/с) - %.1f\n Скорость порывов ветра (в м/с) - %.1f\n Направление ветра - %s",
 		request.CityName, r.Geo_object.Province.Name, r.Fact.Wind_speed, r.Fact.Wind_gust, wind_dir)
 	return msg, nil
