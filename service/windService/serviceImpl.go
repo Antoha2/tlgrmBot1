@@ -14,7 +14,7 @@ import (
 func (s *service) ProcessingResp(ctx context.Context, tgMessage tgbotapi.Update) tgbotapi.MessageConfig {
 
 	var yaData string
-	repMessage := new(repository.RepositoryMessage)
+	repMessage := new(repository.RepositoryMessagelist)
 
 	testOk := checkMsgText(tgMessage.Message.Text)
 
@@ -42,22 +42,20 @@ func (s *service) ProcessingResp(ctx context.Context, tgMessage tgbotapi.Update)
 	msg := tgbotapi.NewMessage(tgMessage.Message.Chat.ID, yaData)
 	//Chat := update.Message.Chat.ID
 
-	repMessage.UserName = tgMessage.Message.From.UserName
+	//repMessage.UserName = tgMessage.Message.From.UserName
 	repMessage.Text = tgMessage.Message.Text
-	repMessage.Chat.ChatId = tgMessage.Message.Chat.ID
+	repMessage.ChatId = tgMessage.Message.Chat.ID
 	repMessage.Response = msg.Text
+	repMessage.UserId = tgMessage.Message.From.ID //tgMessage.Message.Contact.UserID
 
 	err := s.rep.AddMessage(repMessage)
 	if err != nil {
 		log.Println(err)
 	}
-	//msg := tgbotapi.NewMessage(repMessage.Chat.ChatId, yaData)
 	return msg
 }
 
 func (s *service) RepeatRequest(ctx context.Context, tgMessage tgbotapi.Update) tgbotapi.MessageConfig {
-
-	//var msg tgbotapi.Update
 
 	repMessage, err := s.rep.RepeatMessage(tgMessage.Message.Chat.ID)
 	if err != nil {
@@ -76,28 +74,6 @@ func (s *service) RepeatRequest(ctx context.Context, tgMessage tgbotapi.Update) 
 }
 
 func checkMsgText(msg string) bool {
-	//m, _ := regexp.MatchString("^[a-zA-Z]", msg)
 	m, _ := regexp.MatchString("^[а-яA-Я]", msg)
 	return m
 }
-
-// func (sImpl *serviceImpl) StartWindRequest() {
-
-// 	sImpl.clientWeather.GetWind()
-
-// 	sImpl.repository.AddMessage()
-// 	err :=  sImpl.clientWeather   //getYandex(YandexUrl, offset)
-// 	if err != nil {
-// 	log.Println("getUpdates() -", err)
-// 	}
-// 	for _, update := range updates {
-// 		err := respond(GismeteoUrl, update)
-// 		if err != nil {
-// 			log.Println("respond() -", err)
-// 		}
-// 		offset = update.UpdateId + 1
-
-// 	}
-// 	log.Println(updates)
-
-// }
