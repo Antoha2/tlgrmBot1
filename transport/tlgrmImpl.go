@@ -2,10 +2,12 @@ package transport
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"reflect"
 
 	"github.com/Antoha2/tlgrmBot1/config"
+	service "github.com/Antoha2/tlgrmBot1/service/windService"
 	tgbotapi "github.com/Syfaro/telegram-bot-api"
 )
 
@@ -37,6 +39,10 @@ func (wImpl *webImpl) StartBot() {
 		if reflect.TypeOf(update.Message.Text).Kind() == reflect.String && update.Message.Text != "" {
 			switch update.Message.Text {
 
+			case "/start":
+				wImpl.windService.UserVerification(context.Background(), update)
+				msg = tgbotapi.NewMessage(update.Message.Chat.ID, fmt.Sprintf("Приветствую, %s", service.UserNameVerification(update)))
+				bot.Send(msg)
 			case "/stavropol":
 				update.Message.Text = "ставрополь"
 				msg = wImpl.windService.ProcessingResp(context.Background(), update)

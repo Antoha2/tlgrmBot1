@@ -5,6 +5,8 @@ import "gorm.io/gorm"
 type Repository interface {
 	AddMessage(*RepositoryMessagelist) error
 	RepeatMessage(ChatId int64) (*RepositoryMessagelist, error)
+	AddUser(*RepositoryUserlist) error
+	UserVerification(*RepositoryUserlist) bool
 }
 
 type repositoryImplDB struct {
@@ -28,7 +30,7 @@ type RepositoryMessagelist struct {
 }
 
 type RepositoryUserlist struct {
-	//Id int `json:"id"`
+	Id       int    `json:"id"`
 	UserId   int    `json:"user_id"`
 	UserName string `json:"user_name"`
 	Add_date string `json:"add_date"`
