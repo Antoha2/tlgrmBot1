@@ -1,4 +1,4 @@
 .vscode/
 go.mod
-# postgres/
+postgres/
 docker-compose.yaml
