@@ -34,7 +34,7 @@ func Run() {
 	gormDB, err := initDb(cfg)
 	if err != nil {
 		log.Println(err)
-		os.Exit(1) 
+		os.Exit(1)
 	}
 
 	TgBotRepository := repository.NewRepository(gormDB)
@@ -54,6 +54,8 @@ func Run() {
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
 
 	<-quit
+
+	HTTPTransport.Stop()
 }
 
 func initDb(cfg *config.Config) (*gorm.DB, error) {
