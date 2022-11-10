@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Antoha2/tlgrmBot1/config"
+	//"github.com/Antoha2/tlgrmBot1/config"
 	"github.com/Antoha2/tlgrmBot1/internal/meteo"
 )
 
@@ -16,12 +16,12 @@ func (s *yandexImpl) GetWind(request *meteo.Querry) (string, error) {
 	coordStr := fmt.Sprintf("?lat=%s&lon=%s", request.Lat, request.Lon)
 
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", config.YandexUrl+coordStr, nil)
+	req, err := http.NewRequest("GET", s.config.YA.YandexUrl+coordStr, nil)
 	if err != nil {
 		log.Println("http.NewRequest() - ", err)
 		return "", err
 	}
-	req.Header.Set(config.YandexKey, config.YandexTocken)
+	req.Header.Set(s.config.YA.YandexKey, s.config.YA.YandexTocken)
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Println("client.Do() - ", err)
@@ -42,31 +42,7 @@ func (s *yandexImpl) GetWind(request *meteo.Querry) (string, error) {
 		return "", err
 	}
 
-	var wind_dir string
-	switch r.Fact.Wind_dir {
-	case "nw":
-		wind_dir = "северо-западное"
-	case "n":
-		wind_dir = "северное"
-	case "ne":
-		wind_dir = "северо-восточное"
-	case "e":
-		wind_dir = "восточное"
-	case "se":
-		wind_dir = "юго-восточное"
-	case "s":
-		wind_dir = "южное"
-	case "sw":
-		wind_dir = "юго-западное"
-	case "w":
-		wind_dir = "западное"
-	case "c":
-		wind_dir = "штиль"
-
-	}
-
-	// msg := fmt.Sprintf("Яндекс \n %s %s \n Скорость ветра (в м/с) - %.1f\n Скорость порывов ветра (в м/с) - %.1f\n Направление ветра - %s",
-	// r.Geo_object.Locality.Name, r.Geo_object.Province.Name, r.Fact.Wind_speed, r.Fact.Wind_gust, wind_dir)
+	wind_dir := windDirMap[r.Fact.Wind_dir]
 
 	msg := fmt.Sprintf("Яндекс \n %s %s \n Скорость ветра (в м/с) - %.1f\n Скорость порывов ветра (в м/с) - %.1f\n Направление ветра - %s",
 		request.CityName, r.Geo_object.Province.Name, r.Fact.Wind_speed, r.Fact.Wind_gust, wind_dir)

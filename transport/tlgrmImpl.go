@@ -2,18 +2,14 @@ package transport
 
 import (
 	"context"
-	"fmt"
 	"log"
-	"reflect"
 
-	"github.com/Antoha2/tlgrmBot1/config"
-	service "github.com/Antoha2/tlgrmBot1/service/windService"
 	tgbotapi "github.com/Syfaro/telegram-bot-api"
 )
 
 func (wImpl *webImpl) StartBot() {
 
-	bot, err := tgbotapi.NewBotAPI(config.BotToken)
+	bot, err := tgbotapi.NewBotAPI(wImpl.config.TG.BotToken)
 	if err != nil {
 		log.Println("NewBotAPI() - ", err)
 		panic(err)
@@ -30,42 +26,13 @@ func (wImpl *webImpl) StartBot() {
 		panic(err)
 	}
 
-	var msg tgbotapi.MessageConfig
-
 	for update := range updates {
 		if update.Message == nil {
 			continue
 		}
-		if reflect.TypeOf(update.Message.Text).Kind() == reflect.String && update.Message.Text != "" {
-			switch update.Message.Text {
-
-			case "/start":
-				wImpl.windService.UserVerification(context.Background(), update)
-				msg = tgbotapi.NewMessage(update.Message.Chat.ID, fmt.Sprintf("Приветствую, %s", service.UserNameVerification(update)))
-				bot.Send(msg)
-			case "/stavropol":
-				update.Message.Text = "ставрополь"
-				msg = wImpl.windService.ProcessingResp(context.Background(), update)
-				bot.Send(msg)
-			case "/moskow":
-				update.Message.Text = "москва"
-				msg = wImpl.windService.ProcessingResp(context.Background(), update)
-				bot.Send(msg)
-			case "/saint_petersburg":
-				update.Message.Text = "санкт-петербург"
-				msg = wImpl.windService.ProcessingResp(context.Background(), update)
-				bot.Send(msg)
-			case "/alma_ata":
-				update.Message.Text = "алма-ата"
-				msg = wImpl.windService.ProcessingResp(context.Background(), update)
-				bot.Send(msg)
-			case "/repeat_last_request":
-				msg = wImpl.windService.RepeatRequest(context.Background(), update)
-				bot.Send(msg)
-			default:
-				msg = wImpl.windService.ProcessingResp(context.Background(), update)
-				bot.Send(msg)
-			}
+		if update.Message.Text != "" {
+			msg := wImpl.windService.ProcessingResp(context.Background(), update)
+			bot.Send(msg)
 		}
 	}
 }

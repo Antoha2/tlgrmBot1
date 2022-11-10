@@ -17,6 +17,7 @@ import (
 	"github.com/Antoha2/tlgrmBot1/internal/geokoder"
 	"github.com/Antoha2/tlgrmBot1/internal/meteo/providers/gismeteo"
 	yandeX "github.com/Antoha2/tlgrmBot1/internal/meteo/providers/yandeX"
+	http "github.com/Antoha2/tlgrmBot1/pkg/http/transport"
 	repository "github.com/Antoha2/tlgrmBot1/repository"
 	service "github.com/Antoha2/tlgrmBot1/service/windService"
 	trans "github.com/Antoha2/tlgrmBot1/transport"
@@ -33,19 +34,21 @@ func Run() {
 	gormDB, err := initDb(cfg)
 	if err != nil {
 		log.Println(err)
-		os.Exit(1)
+		os.Exit(1) 
 	}
 
 	TgBotRepository := repository.NewRepository(gormDB)
 
 	TgBotGeokoder := geokoder.NewGeokoder()
-	TgBotMeteoYandex := yandeX.NewYandex()
+	TgBotMeteoYandex := yandeX.NewYandex(cfg)
 	TgBotMeteoGismeteo := gismeteo.NewGismeteo()
 
 	TgBotService := service.NewService(TgBotRepository, TgBotMeteoYandex, TgBotMeteoGismeteo, TgBotGeokoder)
-	TgBotTransport := trans.NewWeb(TgBotService)
+	TgBotTransport := trans.NewWeb(TgBotService, cfg)
+	HTTPTransport := http.NewHTTP(TgBotService, cfg)
 
-	TgBotTransport.StartBot()
+	go TgBotTransport.StartBot()
+	go HTTPTransport.StartHTTP()
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)

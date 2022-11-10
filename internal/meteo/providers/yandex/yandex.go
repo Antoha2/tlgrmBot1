@@ -2,20 +2,20 @@ package yandex
 
 import (
 	//"github.com/Antoha2/tlgrmBot1/internal/geokoder"
+	"github.com/Antoha2/tlgrmBot1/config"
 	"github.com/Antoha2/tlgrmBot1/internal/meteo"
 )
 
 var YandexCoordinates string
 
 type yandexImpl struct {
-	meteo.GetWinder
+	config    *config.Config
+	getWinder meteo.GetWinder
 	//	geokoder.GeokoderIn
 }
 
-func NewYandex() *yandexImpl {
-	return &yandexImpl{
-		//geokoder: gk,
-	}
+func NewYandex(cfg *config.Config) *yandexImpl {
+	return &yandexImpl{config: cfg}
 }
 
 type Yandex struct {
