@@ -17,6 +17,10 @@ services:
     volumes:
       - ./:/app/
     working_dir: /app
+    expose:
+      - 8180
+    ports:
+      - '8180:8180'
 
     command: >
      bash -c "go run  ./cmd/main.go"
