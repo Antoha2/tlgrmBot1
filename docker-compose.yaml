@@ -13,6 +13,7 @@ services:
       YANDEX_TOCKEN: 25b77834-9b16-43b1-8b8e-28c2742f4819
       YANDEX_URL: https://api.weather.yandex.ru/v2/forecast
       YANDEX_KEY: X-Yandex-API-Key
+      HOST_ADDR: :8180
       
     volumes:
       - ./:/app/

@@ -61,7 +61,7 @@ func GetConfig() *Config {
 			BotToken: os.Getenv("BOT_TOCKEN"),
 		},
 		HTTP: HTTPConfig{
-			HostAddr:   ":8180",
+			HostAddr:   os.Getenv("HOST_ADDR"),
 			ContextKey: "History",
 		},
 	}
