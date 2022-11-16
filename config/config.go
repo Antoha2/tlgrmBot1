@@ -67,12 +67,3 @@ func GetConfig() *Config {
 	}
 
 }
-
-/* DB: DBConfig{
-	Dbname:   "root",
-	User:     "root",
-	Password: "root",
-	Host:     "postgres",
-	Port:     5432,
-	Sslmode:  "",
-}, */
